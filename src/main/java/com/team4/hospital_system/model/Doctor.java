@@ -15,7 +15,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @SuperBuilder
 @Entity
-@Table(name = "doctors")
 public class Doctor extends User {
 
     @Id
