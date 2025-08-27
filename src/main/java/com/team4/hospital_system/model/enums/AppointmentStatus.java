@@ -1,4 +1,4 @@
-package com.team4.hospital_system.model.enum;
+package com.team4.hospital_system.model.enums;
 
 public enum AppointmentStatus {
     BOOKED,
