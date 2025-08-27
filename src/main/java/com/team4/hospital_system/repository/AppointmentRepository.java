@@ -9,14 +9,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+    List<Appointment> findByPatientId(Long patientId);
 
     @Query("""
         SELECT a FROM Appointment a
         WHERE a.doctor.id = :doctorId
-          AND a.startTime BETWEEN :start AND :end
-        ORDER BY a.startTime ASC
+          AND a.startTime < :end
+          AND a.endTime > :start
     """)
-    List<Appointment> findByDoctorIdAndStartTimeBetween(@Param("doctorId") Long doctorId,
-                                                        @Param("start") LocalDateTime start,
-                                                        @Param("end") LocalDateTime end);
+    List<Appointment> findDoctorOverlaps(@Param("doctorId") Long doctorId,
+                                         @Param("start") LocalDateTime start,
+                                         @Param("end") LocalDateTime end);
+
+    boolean existsByDoctorIdAndStartTime(Long doctorId, LocalDateTime startTime);
 }

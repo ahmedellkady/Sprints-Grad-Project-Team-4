@@ -1,38 +1,29 @@
 package com.team4.hospital_system.model;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "doctors")
 public class Doctor {
-    
+
     @Id
     private Long id;
-    
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
     private User user;
-
-    private LocalDateTime startTime;
-
-    private LocalDateTime endTime;
-
-    private String specialization;
 
     @ElementCollection(targetClass = DayOfWeek.class)
     @CollectionTable(
