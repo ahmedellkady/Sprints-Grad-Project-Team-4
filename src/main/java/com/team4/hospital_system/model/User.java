@@ -3,11 +3,12 @@ package com.team4.hospital_system.model;
 import com.team4.hospital_system.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "users")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @Builder
+@NoArgsConstructor @AllArgsConstructor @SuperBuilder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -29,19 +29,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public DoctorScheduleDto getDoctorSchedule(long doctorId) {
-        // Validate doctor exists
         User user = userRepository.findById(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor with id " + doctorId + " not found"));
         if (!(user instanceof Doctor)) {
             throw new ResourceNotFoundException("User with id " + doctorId + " is not a doctor");
         }
-        String doctorName = user.getName();
+        Doctor doctor = (Doctor) user;
+        String doctorName = doctor.getName();
 
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime weekAhead = now.plusDays(7);
 
-        List<Appointment> appts = appointmentRepository
-                .findByDoctorIdAndStartTimeBetween(doctorId, now, weekAhead);
+        List<Appointment> appts = appointmentRepository.findDoctorOverlaps(doctorId, now, weekAhead);
 
         List<DoctorScheduleDto.SlotDto> slots = appts.stream()
                 .map(a -> new DoctorScheduleDto.SlotDto(a.getStartTime(), a.getStatus().name()))

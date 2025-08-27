@@ -7,15 +7,16 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 @Table(name = "doctors")
-public class Doctor {
+public class Doctor extends User {
 
     @Id
     private Long id;
