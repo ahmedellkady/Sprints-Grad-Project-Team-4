@@ -1,6 +1,6 @@
 package com.team4.hospital_system.model;
 
-import com.team4.hospital_system.model.enum.Role;
+import com.team4.hospital_system.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

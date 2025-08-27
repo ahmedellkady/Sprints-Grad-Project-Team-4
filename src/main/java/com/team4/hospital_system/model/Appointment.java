@@ -1,14 +1,18 @@
 package com.team4.hospital_system.model;
 
-import com.team4.hospital_system.model.enum.AppointmentStatus;
+
+
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import com.team4.hospital_system.model.enums.AppointmentStatus;
 
 @Entity
 @Table(name = "appointments")
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class Appointment {
 

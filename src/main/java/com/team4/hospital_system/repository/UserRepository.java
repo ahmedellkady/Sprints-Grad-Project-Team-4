@@ -1,7 +1,7 @@
 package com.team4.hospital_system.repository;
 
 import com.team4.hospital_system.model.User;
-import com.team4.hospital_system.model.enum.Role;
+import com.team4.hospital_system.model.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
