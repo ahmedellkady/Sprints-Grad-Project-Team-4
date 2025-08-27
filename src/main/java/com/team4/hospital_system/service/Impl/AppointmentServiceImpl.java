@@ -74,7 +74,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     @Transactional(readOnly = true)
     public List<AppointmentDto> listForDoctor(long doctorId) {
-        return appointmentRepository.findAll().stream()
+        return appointmentRepository.findByDoctorId(doctorId).stream()
                 .filter(a -> a.getDoctor().getId().equals(doctorId))
                 .map(AppointmentServiceImpl::toDto)
                 .toList();
