@@ -1,13 +1,19 @@
-// package com.team4.hospital_system.service;
+package com.team4.hospital_system.service;
 
-// import com.team4.hospital_system.dto.request.AppointmentRequestDto;
-// import com.team4.hospital_system.dto.response.AppointmentResponseDto;
+import com.team4.hospital_system.dto.response.AppointmentDto;
 
-// import java.time.LocalDate;
-// import java.util.List;
+import java.time.LocalDateTime;
+import java.util.List;
 
-// public interface AppointmentService {
-//     AppointmentResponseDto bookAppointment(Long patientId, AppointmentRequestDto request);
-//     List<AppointmentResponseDto> getAppointmentsForPatient(Long patientId);
-//     List<AppointmentResponseDto> getDoctorSchedule(Long doctorId, LocalDate day);
-// }
+public interface AppointmentService {
+    AppointmentDto book(long patientId, long doctorId, LocalDateTime start);
+    List<AppointmentDto> listForPatient(long patientId);
+    List<AppointmentDto> listForDoctor(long doctorId);
+
+    AppointmentDto accept(long doctorId, long appointmentId);
+    AppointmentDto reschedule(long userId, long appointmentId, LocalDateTime newStart); //both patient and doctor can reschedule
+    void cancel(long userId, long appointmentId, String note); //both patient and doctor can cancel
+
+    // Follow-up (links new appointment to previous via prevAppointment)
+    AppointmentDto recordFollowUp(long doctorId, long previousAppointmentId, LocalDateTime followUpStart, String note);
+}
