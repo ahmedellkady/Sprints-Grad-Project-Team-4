@@ -16,6 +16,9 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, length = 255)
+    private String hashedPassword;
+
     @Column(nullable = false, unique = true)
     private String email;
 

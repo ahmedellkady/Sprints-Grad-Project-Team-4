@@ -22,16 +22,23 @@ public class Appointment {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "doctor_id")
-    private User doctor;
+    private Doctor doctor;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "patient_id")
-    private User patient;
+    private Patient patient;
 
     @Column(nullable = false)
-    private LocalDateTime appointmentTime;
+    private LocalDateTime startTime;
+
+    @Column(nullable = false)
+    private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AppointmentStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prev_appointment_id")
+    private Appointment prevAppointment;
 }
