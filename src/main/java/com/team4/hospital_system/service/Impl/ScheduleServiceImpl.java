@@ -1,3 +1,4 @@
+
 package com.team4.hospital_system.service.Impl;
 
 import com.team4.hospital_system.dto.response.DoctorScheduleDto;
@@ -49,3 +50,4 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new DoctorScheduleDto(doctorId, doctorName, slots);
     }
 }
+
