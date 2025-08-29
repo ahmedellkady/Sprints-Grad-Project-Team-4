@@ -1,4 +1,4 @@
-package com.team4.hospital_system.service.impl;
+package com.team4.hospital_system.service.Impl;
 
 import com.team4.hospital_system.dto.response.AppointmentDto;
 import com.team4.hospital_system.exception.BadRequestException;
