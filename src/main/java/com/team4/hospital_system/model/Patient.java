@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "patients")
 public class Patient {
 
     @Id

@@ -3,6 +3,7 @@ package com.team4.hospital_system.model;
 import com.team4.hospital_system.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
