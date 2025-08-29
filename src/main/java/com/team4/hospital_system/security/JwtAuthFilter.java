@@ -1,7 +1,7 @@
 package com.team4.hospital_system.security;
 
+import com.team4.hospital_system.service.Impl.MyUserDetailsService;
 import com.team4.hospital_system.service.JwtService;
-import com.team4.hospital_system.service.UserService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +24,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtUtil;
 
-    private final UserService userDetailsService;
+    private final MyUserDetailsService userDetailsService;
 
 //    @Override
 //    protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -51,7 +51,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = userDetailsService.userDetailsService().loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
             UsernamePasswordAuthenticationToken authToken =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

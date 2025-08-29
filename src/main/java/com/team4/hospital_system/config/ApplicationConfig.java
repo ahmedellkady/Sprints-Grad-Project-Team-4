@@ -1,14 +1,11 @@
 package com.team4.hospital_system.config;
 
 import com.team4.hospital_system.security.JwtAuthFilter;
-import com.team4.hospital_system.security.JwtServiceImpl;
-import com.team4.hospital_system.service.JwtService;
-import com.team4.hospital_system.service.UserService;
+import com.team4.hospital_system.service.Impl.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -29,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class ApplicationConfig {
 
     private final JwtAuthFilter jwtFilter;
-    private final UserService userService;
+    private final MyUserDetailsService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,6 +40,14 @@ public class ApplicationConfig {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
+                                                            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return authProvider;
     }
 
     @Bean

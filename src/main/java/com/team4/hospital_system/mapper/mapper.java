@@ -15,24 +15,24 @@ public class mapper {
         return modelMapper.map(patientDto, Patient.class);
     }
 
-    public RegisterPatientDto toRegisterPatientDto(Patient patient){
-        return modelMapper.map(patient, RegisterPatientDto.class);
+    public RegisterPatientDto toRegisterPatientDto(User user){
+        return modelMapper.map(user, RegisterPatientDto.class);
     }
 
     public Doctor toDoctorEntity(RegisterDoctorDto doctorDto){
         return modelMapper.map(doctorDto, Doctor.class);
     }
 
-    public RegisterDoctorDto toRegisterDoctorDto(Doctor doctor){
-        return modelMapper.map(doctor, RegisterDoctorDto.class);
+    public RegisterDoctorDto toRegisterDoctorDto(User user){
+        return modelMapper.map(user, RegisterDoctorDto.class);
     }
 
     public Pharmacy toPharmacyEntity(RegisterPharmacyDto pharmacyDto){
         return modelMapper.map(pharmacyDto, Pharmacy.class);
     }
 
-    public RegisterPharmacyDto toRegisterPharmacyDto(Pharmacy pharmacy){
-        return modelMapper.map(pharmacy, RegisterPharmacyDto.class);
+    public RegisterPharmacyDto toRegisterPharmacyDto(User user){
+        return modelMapper.map(user, RegisterPharmacyDto.class);
     }
 
     public User toUserEntity(RegisterPatientDto Dto){

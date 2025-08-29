@@ -5,9 +5,8 @@ import com.team4.hospital_system.dto.request.RegisterDoctorDto;
 import com.team4.hospital_system.dto.request.RegisterPatientDto;
 import com.team4.hospital_system.dto.request.RegisterPharmacyDto;
 import com.team4.hospital_system.dto.response.AuthResponseDto;
-import com.team4.hospital_system.dto.response.UserDto;
 import com.team4.hospital_system.service.AuthService;
-import com.team4.hospital_system.service.UserService;
+import com.team4.hospital_system.service.Impl.MyUserDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final MyUserDetailsService userService;
     private final AuthService authService;
 
     @PostMapping("/register/patient")
@@ -41,15 +40,4 @@ public class AuthController {
     public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginDto request) {
         return ResponseEntity.ok(authService.login(request));
     }
-//
-//    @PostMapping("/refresh")
-//    public ResponseEntity<AuthResponseDto> refresh(@Valid @RequestBody RefreshTokenDto request) {
-//        return ResponseEntity.ok(authService.refresh(request));
-//    }
-//
-//    @PostMapping("/logout")
-//    public ResponseEntity<Void> logout(@Valid @RequestBody RefreshTokenDto request) {
-//        authService.logout(request.getRefreshToken());
-//        return ResponseEntity.ok().build();
-//    }
 }
