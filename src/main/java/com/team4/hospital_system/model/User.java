@@ -3,13 +3,19 @@ package com.team4.hospital_system.model;
 import com.team4.hospital_system.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @SuperBuilder
-public class User {
+@NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +32,5 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
 }

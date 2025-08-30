@@ -16,6 +16,8 @@ public class Patient {
     @Id
     private Long id;
 
+    private int age;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
