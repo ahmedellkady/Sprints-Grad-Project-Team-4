@@ -13,9 +13,10 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Builder
 @Entity
-public class Doctor extends User {
+@Table(name="doctors")
+public class Doctor{
 
     @Id
     private Long id;
