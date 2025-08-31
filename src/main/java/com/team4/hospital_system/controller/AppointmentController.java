@@ -38,5 +38,28 @@
 //    @GetMapping("/doctors/{doctorId}/appointments")
 //    public ResponseEntity<List<AppointmentDto>> listForDoctor(@PathVariable long doctorId) {
 //        return ResponseEntity.ok(appointmentService.listForDoctor(doctorId));
+// === Use Case 1: Reschedule Appointment ===
+@PutMapping("/{appointmentId}/reschedule")
+public ResponseEntity<AppointmentDto> rescheduleAppointment(
+        @PathVariable Long appointmentId,
+        @RequestBody @Valid RescheduleAppointmentRequest request) {
+    AppointmentDto updated = appointmentService.rescheduleAppointment(appointmentId, request);
+    return ResponseEntity.ok(updated);
+}
+
+// === Use Case 1: Cancel Appointment ===
+@DeleteMapping("/{appointmentId}/cancel")
+public ResponseEntity<Void> cancelAppointment(@PathVariable Long appointmentId) {
+    appointmentService.cancelAppointment(appointmentId);
+    return ResponseEntity.noContent().build();
+}
+
+// === Use Case 2: Accept Appointment ===
+@PutMapping("/{appointmentId}/accept")
+public ResponseEntity<AppointmentDto> acceptAppointment(@PathVariable Long appointmentId) {
+    AppointmentDto accepted = appointmentService.acceptAppointment(appointmentId);
+    return ResponseEntity.ok(accepted);
+}
+
 //    }
 //}
