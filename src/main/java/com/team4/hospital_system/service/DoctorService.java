@@ -1,3 +1,9 @@
-package com.hospital.service;
+package com.team4.hospital_system.service;
 
-public interface DoctorService { }
+import com.team4.hospital_system.dto.response.PatientHistoryDto;
+
+import java.util.List;
+
+public interface DoctorService {
+    List<PatientHistoryDto> getPatientHistory(Long doctorId, Long patientId);
+}
