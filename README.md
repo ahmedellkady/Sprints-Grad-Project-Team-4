@@ -385,5 +385,123 @@ These tests focus exclusively on the API layer, ensuring that controllers handle
     -   The `MessagingControllerTest` shows how to test protected endpoints by mocking an authenticated user with `@WithMockUser` and the `SecurityMockMvcRequestPostProcessors`.
 
 ---
+
+
+
+# Docker Quick Start
+
+This  explains how to run **any Spring Boot project** with **MySQL** using the provided **Dockerfile** and **docker-compose.yml**. It’s optimized for speed (multi‑stage build), small image size, and minimal setup.
+
+## What’s included
+- **Dockerfile** — Builds your app JAR with Maven, then runs it on Temurin JRE 17.
+- **docker-compose.yml** — Starts **MySQL 8.0** and your app; waits for DB health before starting the app.
+
+## Requirements
+- Docker Desktop (Win/macOS) or Docker Engine (Linux)
+- (Windows) WSL2 enabled
+
+> Put `Dockerfile` and `docker-compose.yml` in the **project root** (same folder as `pom.xml`).
+
+---
+
+## 1‑Minute Quick Start
+
+```bash
+# From your project root
+docker compose up --build
+
+# Follow app logs
+docker compose logs -f app
+```
+
+Open your app at **http://localhost:8080**
+
+**Stop**: `docker compose down`  
+**Restart after code changes**: `docker compose up -d --build`
+
+---
+
+## How it works
+
+### Dockerfile (multi-stage)
+1. **Build stage** uses Maven to compile and package the JAR (cache-enabled to speed up rebuilds).
+2. **Runtime stage** copies the JAR into a small JRE image and runs it on port **8080**.
+
+### docker-compose.yml
+- **db** (MySQL 8.0) publishes **3307 → 3306**, creates the DB and user, and exposes a named volume `mysql_data`.
+- **app** builds your project image and sets Spring env vars:
+  - `SPRING_PROFILES_ACTIVE=docker`
+  - `SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/app_db`
+  - `SPRING_DATASOURCE_USERNAME=app_user`
+  - `SPRING_DATASOURCE_PASSWORD=app_pass`
+  - `SPRING_JPA_HIBERNATE_DDL_AUTO=update`
+- `depends_on` waits until DB is **healthy** before starting the app.
+
+> **Note:** These environment variables override values in `application.properties`/`application.yml` at runtime.
+
+---
+
+## Database Details
+
+**Host (from your machine):**
+- Host: `127.0.0.1`
+- Port: `3307`
+- DB: `app_db`
+- User/Pass: `app_user` / `app_pass`
+
+**Inside the Docker network (from the app container):**
+- Host: `db`
+- Port: `3306`
+
+**Test connection with MySQL CLI (host):**
+```bash
+mysql -h 127.0.0.1 -P 3307 -u app_user -p
+# then: SHOW DATABASES; USE app_db;
+```
+
+---
+
+## Optional: Run App Locally (DB in Docker)
+
+1. Start only the database:
+   ```bash
+   docker compose up -d db
+   ```
+2. Point Spring to `127.0.0.1:3307` in `src/main/resources/application.properties`:
+   ```properties
+   spring.datasource.url=jdbc:mysql://127.0.0.1:3307/app_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+   spring.datasource.username=app_user
+   spring.datasource.password=app_pass
+   spring.jpa.hibernate.ddl-auto=update
+   ```
+3. Run your app from IDE/CLI.
+
+---
+
+## Common Issues & Fixes
+
+- **Docker daemon not running**  
+  Start Docker Desktop (Windows/macOS) or system service (Linux).
+
+- **Port already in use (8080 or 3307)**  
+  Change the host ports in `docker-compose.yml` accordingly.
+
+- **`Access denied` / wrong JDBC host**  
+  Inside Docker, use `jdbc:mysql://**db**:3306/...` *not* `localhost`.
+
+- **DB not ready**  
+  Check: `docker compose ps` and `docker logs mysql-db`. The app starts only after MySQL healthcheck passes.
+
+- **Schema issues**  
+  Adjust `SPRING_JPA_HIBERNATE_DDL_AUTO` (e.g., `validate`, `update`, `create`, `create-drop`) as appropriate.
+
+- **Reset the database (dev only!)**
+  ```bash
+  docker compose down -v   # removes containers and volumes, erasing DB data
+  docker compose up -d --build
+  ```
+
+---
+
 ##  Database Schema
 ![ERD](<erd.jpg>)

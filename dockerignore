@@ -1,0 +1,12 @@
+# build outputs
+
+target
+build
+out
+
+# VCS & IDE files
+.git
+.gitignore
+.vscode
+.idea
+*.iml
