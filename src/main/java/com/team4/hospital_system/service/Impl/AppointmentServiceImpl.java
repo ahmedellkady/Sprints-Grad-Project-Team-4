@@ -1,6 +1,7 @@
 package com.team4.hospital_system.service.Impl;
 
 import com.team4.hospital_system.dto.response.AppointmentDto;
+import com.team4.hospital_system.dto.request.RescheduleAppointmentRequest;
 import com.team4.hospital_system.exception.BadRequestException;
 import com.team4.hospital_system.exception.ResourceNotFoundException;
 import com.team4.hospital_system.model.Appointment;
@@ -80,6 +81,39 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .toList();
     }
 
+    // === Use Case 1: Reschedule Appointment ===
+    @Override
+    public AppointmentDto rescheduleAppointment(Long appointmentId, RescheduleAppointmentRequest request) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+
+        appointment.setStartTime(request.getNewTime());
+        appointment.setEndTime(request.getNewTime().plus(DEFAULT_DURATION));
+        Appointment updated = appointmentRepository.save(appointment);
+
+        return toDto(updated);
+    }
+
+    // === Use Case 1: Cancel Appointment ===
+    @Override
+    public void cancelAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+        appointmentRepository.delete(appointment);
+    }
+
+    // === Use Case 2: Accept Appointment ===
+    @Override
+    public AppointmentDto acceptAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+
+        appointment.setStatus(AppointmentStatus.ACCEPTED);
+        Appointment updated = appointmentRepository.save(appointment);
+
+        return toDto(updated);
+    }
+
     private static AppointmentDto toDto(Appointment a) {
         return new AppointmentDto(
                 a.getId(),
@@ -91,3 +125,4 @@ public class AppointmentServiceImpl implements AppointmentService {
         );
     }
 }
+
