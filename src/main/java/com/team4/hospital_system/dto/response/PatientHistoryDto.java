@@ -1,3 +1,5 @@
-package com.hospital.dto;
+package com.team4.hospital_system.dto.response;
 
-public class PatientHistoryDto { public Long patientId; }
+public class PatientHistoryDto {
+
+}

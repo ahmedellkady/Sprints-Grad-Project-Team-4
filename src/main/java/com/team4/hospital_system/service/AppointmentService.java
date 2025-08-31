@@ -9,14 +9,4 @@ public interface AppointmentService {
     AppointmentDto book(long patientId, long doctorId, LocalDateTime start);
     List<AppointmentDto> listForPatient(long patientId);
     List<AppointmentDto> listForDoctor(long doctorId);
-    @Service
-public class AppointmentService {
-
-    private final AppointmentRepository appointmentRepository;
-
-    public AppointmentService(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
-    }
-}
-
 }
