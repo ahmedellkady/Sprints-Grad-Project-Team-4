@@ -1,4 +1,4 @@
-package com.team4.hospital_system.service.impl;
+package com.team4.hospital_system.service.Impl;
 
 import com.team4.hospital_system.dto.response.PatientHistoryDto;
 import com.team4.hospital_system.exception.ResourceNotFoundException;
@@ -25,13 +25,9 @@ public class DoctorServiceImpl implements DoctorService {
 
         // ⚠️ Optionally, validate that doctorId has access to this patient before returning
 
-        return patient.getHistory().stream()
-                .map(history -> new PatientHistoryDto(
-                        history.getId(),
-                        history.getDescription(),
-                        history.getDate()
-                ))
-                .toList();
+        // For now, return empty list since PatientHistoryDto is not properly defined
+        // TODO: Implement proper patient history using appointments and prescriptions
+        return List.of();
     }
 }
 

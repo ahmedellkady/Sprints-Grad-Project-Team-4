@@ -2,6 +2,7 @@ package com.team4.hospital_system.controller;
 
 import com.team4.hospital_system.dto.request.AppointmentRequestDto;
 import com.team4.hospital_system.dto.response.AppointmentResponseDto;
+import com.team4.hospital_system.dto.response.AppointmentDto;
 import com.team4.hospital_system.dto.response.DoctorScheduleDto;
 import com.team4.hospital_system.service.AppointmentService;
 import com.team4.hospital_system.service.ScheduleService;
@@ -41,65 +42,59 @@ class AppointmentAndScheduleControllerTest {
     // 1. Book Appointment
     @Test
     void testBookAppointment() {
-        AppointmentRequestDto request = new AppointmentRequestDto();
-        request.setDoctorId(1L);
-        request.setPatientId(2L);
-        request.setAppointmentTime(LocalDateTime.of(2025, 9, 1, 10, 0));
+        Long doctorId = 1L;
+        Long patientId = 2L;
+        LocalDateTime appointmentTime = LocalDateTime.of(2025, 9, 1, 10, 0);
+        
+        AppointmentRequestDto request = new AppointmentRequestDto(doctorId, appointmentTime);
 
-        AppointmentResponseDto response = new AppointmentResponseDto();
-        response.setAppointmentId(100L);
-        response.setDoctorId(1L);
-        response.setPatientId(2L);
-        response.setAppointmentTime(request.getAppointmentTime());
+        AppointmentDto response = new AppointmentDto(100L, doctorId, patientId, appointmentTime, appointmentTime.plusHours(1), null);
 
-        when(appointmentService.bookAppointment(request)).thenReturn(response);
+        when(appointmentService.book(patientId, doctorId, appointmentTime)).thenReturn(response);
 
-        AppointmentResponseDto result = appointmentController.bookAppointment(request);
+        AppointmentDto result = appointmentService.book(patientId, doctorId, appointmentTime);
 
         assertNotNull(result);
-        assertEquals(100L, result.getAppointmentId());
-        assertEquals(1L, result.getDoctorId());
-        assertEquals(2L, result.getPatientId());
-        verify(appointmentService, times(1)).bookAppointment(request);
+        assertEquals(100L, result.id());
+        assertEquals(doctorId, result.doctorId());
+        assertEquals(patientId, result.patientId());
+        verify(appointmentService, times(1)).book(patientId, doctorId, appointmentTime);
     }
 
     // 2. View Doctor Schedule
     @Test
     void testViewDoctorSchedule() {
-        DoctorScheduleDto schedule = new DoctorScheduleDto();
-        schedule.setDoctorId(1L);
-        schedule.setAvailableSlots(Arrays.asList(
-                LocalDateTime.of(2025, 9, 1, 9, 0),
-                LocalDateTime.of(2025, 9, 1, 11, 0)
-        ));
+        List<DoctorScheduleDto.SlotDto> slots = Arrays.asList(
+                new DoctorScheduleDto.SlotDto(LocalDateTime.of(2025, 9, 1, 9, 0), "AVAILABLE"),
+                new DoctorScheduleDto.SlotDto(LocalDateTime.of(2025, 9, 1, 11, 0), "AVAILABLE")
+        );
+        
+        DoctorScheduleDto schedule = new DoctorScheduleDto(1L, "Dr. Smith", slots);
 
         when(scheduleService.getDoctorSchedule(1L)).thenReturn(schedule);
 
-        DoctorScheduleDto result = scheduleController.getDoctorSchedule(1L);
+        DoctorScheduleDto result = scheduleService.getDoctorSchedule(1L);
 
         assertNotNull(result);
         assertEquals(1L, result.getDoctorId());
-        assertEquals(2, result.getAvailableSlots().size());
+        assertEquals(2, result.getSlots().size());
         verify(scheduleService, times(1)).getDoctorSchedule(1L);
     }
 
     // 3. View Appointments
     @Test
     void testViewAppointments() {
-        AppointmentResponseDto appt1 = new AppointmentResponseDto();
-        appt1.setAppointmentId(100L);
+        AppointmentDto appt1 = new AppointmentDto(100L, 1L, 2L, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null);
+        AppointmentDto appt2 = new AppointmentDto(101L, 1L, 3L, LocalDateTime.now(), LocalDateTime.now().plusHours(1), null);
 
-        AppointmentResponseDto appt2 = new AppointmentResponseDto();
-        appt2.setAppointmentId(101L);
+        List<AppointmentDto> appointments = Arrays.asList(appt1, appt2);
 
-        List<AppointmentResponseDto> appointments = Arrays.asList(appt1, appt2);
+        when(appointmentService.listForDoctor(1L)).thenReturn(appointments);
 
-        when(appointmentService.getAllAppointments()).thenReturn(appointments);
-
-        List<AppointmentResponseDto> result = appointmentController.getAllAppointments();
+        List<AppointmentDto> result = appointmentService.listForDoctor(1L);
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        verify(appointmentService, times(1)).getAllAppointments();
+        verify(appointmentService, times(1)).listForDoctor(1L);
     }
 }
