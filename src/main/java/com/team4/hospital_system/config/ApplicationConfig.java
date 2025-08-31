@@ -28,12 +28,16 @@ public class ApplicationConfig {
     private final JwtAuthFilter jwtFilter;
     private final MyUserDetailsService userService;
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/cart/**").permitAll() // TEMPORARY OPEN ACCESS
+                        //.requestMatchers("/api/cart/**").hasRole("PATIENT") // Uncomment if role-based
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -41,6 +45,7 @@ public class ApplicationConfig {
 
         return http.build();
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,

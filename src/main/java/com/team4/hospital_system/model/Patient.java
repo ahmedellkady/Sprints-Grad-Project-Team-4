@@ -3,6 +3,7 @@ package com.team4.hospital_system.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,7 @@ public class Patient {
 
     private int age;
 
+    private String status;
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")

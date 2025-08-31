@@ -1,7 +1,6 @@
 package com.team4.hospital_system.dto.response;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDto {
-    private Long cartId;
-    private BigDecimal totalAmount;
-    private List<CartItemDto> items;
+public class CartItemDto {
+    private Long medicineId;
+    private String medicineName;
+    private int quantity;
+    private BigDecimal price;
 }
