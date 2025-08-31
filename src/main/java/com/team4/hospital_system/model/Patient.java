@@ -18,6 +18,8 @@ public class Patient {
 
     private int age;
 
+    private String status;
+
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
