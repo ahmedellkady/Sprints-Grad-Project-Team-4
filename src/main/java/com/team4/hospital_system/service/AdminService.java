@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface AdminService {
     List<UserDto> listUsers(String role);
+    UserDto getUserById(long userId);
     void deleteUser(long adminId, long userId);
 }
